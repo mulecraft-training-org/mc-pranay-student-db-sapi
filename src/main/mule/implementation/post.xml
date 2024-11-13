@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<flow name="post:\students:application\json:student-registration-api-config">
+        <set-variable value="#[&quot;SELECT student_id FROM students WHERE email_id IN (&quot; ++&#10;&#10;(payload.emailID map ((item)-&gt; &quot;'&quot; ++  item ++  &quot;'&quot;) joinBy  &quot;,&quot; ++  &quot;)&quot; )]" doc:name="Set Variable" doc:id="dd64f0e0-305c-4ba5-9dba-3cc33e961b02" variableName="emailID"/>
+		<logger level="INFO" doc:name="Logger" doc:id="457eb534-a4e3-495c-a8c9-deb30b24c713" message="#[vars.emailID]"/>
+		<db:bulk-insert doc:name="Bulk insert" doc:id="eb328f78-2102-466c-a87f-60a9d113dc55" config-ref="Database_Config1">
+			<db:sql ><![CDATA[INSERT INTO students (first_name, last_name, trainer_id, enrollment_date, course_id, email_id, school_name) 
+VALUES (:firstName, :lastName, :trainerID, TO_DATE(:enrollmentDate, 'YYYY-MM-DD'), :courseID, :emailID, :schoolName);
+]]></db:sql>
+		</db:bulk-insert>
+		<db:select doc:name="Select" doc:id="63e66e66-6e4f-450e-b146-0683aa479625" config-ref="Database_Config1">
+			<db:sql ><![CDATA[#[vars.emailID]]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload.student_id map(
+	{
+		"studentID": $,
+		"201 created": "new student registered"
+	}
+)]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+	</mule>

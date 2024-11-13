@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<flow name="put:\students:application\json:student-registration-api-config">
+		<set-variable doc:name="Set Variable" doc:id="efea823c-d48d-461a-a124-a5e7d3d1e008" variableName="studentID" value="#[payload.studentId]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="d0e72382-3112-419f-bc26-1ad0b6b4a885" message="#[vars.studentID]"/>
+		<db:bulk-update doc:name="Bulk update" doc:id="47b99f58-72b5-4a2b-a1ae-d3083a1e35f7" config-ref="Database_Config1">
+			<db:sql ><![CDATA[UPDATE students SET first_name= :firstName, last_name= :lastName WHERE student_id= :studentId;]]></db:sql>
+		</db:bulk-update>
+		<ee:transform doc:name="Transform Message" doc:id="12294f5f-685e-4dea-bed0-b3b823c71347" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.studentID map(
+	{
+		"studentID": $,
+		"201 created": "updated successfully"
+	}
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+    
+</flow>
+	</mule>

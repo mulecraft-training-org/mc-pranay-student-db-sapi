@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6da0024b-c38e-4035-b53c-083a8e7329fc" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<apikit:config outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" doc:name="Router" doc:id="192f4134-4fb4-458e-8679-473061575600" name="student-registration-api-config" api="resource::079e62ac-99a4-45a2-8626-da7eb9613871:student-registration-api:1.0.10:raml:zip:student-registration-api.raml"/>
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="aa3d9b41-88f0-4bb9-9553-bc0564ecb3df" file="properties\dev.yaml" key="hb1JwHlnZyVzvyxk"/>
+	<db:config name="Database_Config1" doc:name="Database Config" doc:id="e15ce92a-fa49-465e-a90a-8984c8d61eeb" >
+		<db:generic-connection url="jdbc:postgresql://aws-0-ap-south-1.pooler.supabase.com:5432/postgres" driverClassName="org.postgresql.Driver" user="${secure::db.username}" password="${secure::db.password}" />
+	</db:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="3e93ad7c-03e9-4d1c-bafc-8b15bcbfb3e0" file="properties\dev.yaml" />
+</mule>
