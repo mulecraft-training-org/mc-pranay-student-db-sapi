@@ -7,82 +7,198 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
 	<error-handler name="global-error-handler">
             <on-error-propagate type="APIKIT:BAD_REQUEST">
-                <ee:transform doc:name="Transform Message">
+                <logger level="ERROR" doc:name="Logger" doc:id="f7a062f1-711c-4286-afff-7311eac1dd9d" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			<ee:transform doc:name="Transform Message">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Bad request"}]]></ee:set-payload>
+{
+    errorCode: "400 BAD_REQUEST",
+   	errorMessage: error.description
+}]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus">400</ee:set-variable>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[400]]></ee:set-variable>
                     </ee:variables>
                 </ee:transform>
-            </on-error-propagate>
+			<logger level="ERROR" doc:name="Logger" doc:id="829c9f1c-29c0-4072-a773-c4d58e6821bb" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+            
+</on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_FOUND">
-                <ee:transform doc:name="Transform Message">
+                <logger level="ERROR" doc:name="Logger" doc:id="2332e39c-38f5-492c-b62d-f4c20cb809c8" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			<ee:transform doc:name="Transform Message">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Resource not found"}]]></ee:set-payload>
+{
+    errorCode: "404 NOT_FOUND",
+    errorMessage: error.description
+}]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[404]]></ee:set-variable>
                     </ee:variables>
                 </ee:transform>
-            </on-error-propagate>
+			<logger level="ERROR" doc:name="Logger" doc:id="1a890c2c-fe93-4e9f-b0c7-063619a5f418" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+            
+</on-error-propagate>
             <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
-                <ee:transform doc:name="Transform Message">
+                <logger level="ERROR" doc:name="Logger" doc:id="08fc7c0e-de84-4f17-b5e7-396e12ece417" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			<ee:transform doc:name="Transform Message">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Method not allowed"}]]></ee:set-payload>
+{
+    errorCode: "405 METHOD_NOT_ALLOWED",
+    errorMessage: error.description
+}]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus">405</ee:set-variable>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[405]]></ee:set-variable>
                     </ee:variables>
                 </ee:transform>
-            </on-error-propagate>
+			<logger level="ERROR" doc:name="Logger" doc:id="ea8fc397-1368-4ad3-8721-7bd69fd58b35" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+            
+</on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
-                <ee:transform doc:name="Transform Message">
+                <logger level="ERROR" doc:name="Logger" doc:id="ae8662bc-5af2-4dd5-8204-e3d3bdc8c896" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			<ee:transform doc:name="Transform Message">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Not acceptable"}]]></ee:set-payload>
+{
+    errorCode: "406 NOT_ACCEPTABLE",
+    errorMessage: error.description
+}]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus">406</ee:set-variable>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[406]]></ee:set-variable>
                     </ee:variables>
                 </ee:transform>
-            </on-error-propagate>
+			<logger level="ERROR" doc:name="Logger" doc:id="ef96ba8e-2604-4409-99d3-57454d8fb910" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+            
+</on-error-propagate>
             <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
-                <ee:transform doc:name="Transform Message">
+                <logger level="ERROR" doc:name="Logger" doc:id="d39fc23d-5c4e-4fcb-908f-33b1cce8a0ed" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			<ee:transform doc:name="Transform Message">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Unsupported media type"}]]></ee:set-payload>
+{
+    errorCode: "415 UNSUPPORTED_MEDIA_TYPE",
+    errorMessage: error.description
+}]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus">415</ee:set-variable>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[415]]></ee:set-variable>
                     </ee:variables>
                 </ee:transform>
-            </on-error-propagate>
+			<logger level="ERROR" doc:name="Logger" doc:id="49c58843-42b4-474d-80a0-2852d7f248f8" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+            
+</on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
-                <ee:transform doc:name="Transform Message">
+                <logger level="ERROR" doc:name="Logger" doc:id="d76ff3dd-b7e5-4460-b345-39ac8d878cab" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			<ee:transform doc:name="Transform Message">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Not Implemented"}]]></ee:set-payload>
+{
+    errorCode: "501 NOT_IMPLEMENTED",
+    errorMessage: error.description
+}]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus">501</ee:set-variable>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[501]]></ee:set-variable>
                     </ee:variables>
                 </ee:transform>
-            </on-error-propagate>
-        </error-handler>
+			<logger level="ERROR" doc:name="Logger" doc:id="798c83fc-dd64-4362-b324-5fce8c65622b" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+            
+</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a6671295-3415-491b-acf2-e0e5d1ea97e0" type="DB:BAD_SQL_SYNTAX">
+				<logger level="ERROR" doc:name="Logger" doc:id="6f4cce43-b964-48e6-a3eb-16b693eafce9" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			<ee:transform doc:name="Transform Message" doc:id="6f7e622d-c280-4301-9c69-2538ec8caf53" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    errorCode: "400 BAD_REQUEST",
+    errorMessage: error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			<logger level="ERROR" doc:name="Logger" doc:id="2a0320ba-2d93-4dba-9e99-519d5ab47fa1" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			
+</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2c671236-9c7a-40e8-b79d-ca214ff2b504" type="DB:CONNECTIVITY">
+				<logger level="ERROR" doc:name="Logger" doc:id="6e80b3f9-2f21-4f2c-a863-7399dad3eaa2" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			<ee:transform doc:name="Transform Message" doc:id="49b93024-28e6-48d7-9def-a9ec632a5d0f" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    errorCode: "500 INTERNAL_SERVER_ERROR",
+    errorMessage: error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			<logger level="ERROR" doc:name="Logger" doc:id="974bd4ac-23cc-4e47-afe9-abda83fc1407" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			
+</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="83bfcdbe-d4c3-4ffc-92e0-77611f925b54" type="DB:QUERY_EXECUTION">
+				<logger level="ERROR" doc:name="Logger" doc:id="9d5e9faa-80d5-4419-912e-4277ec933946" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			<ee:transform doc:name="Transform Message" doc:id="e54c49f6-ab49-4381-ba90-55182b8deff1" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    errorCode: "500 INTERNAL_SERVER_ERROR",
+    errorMessage: error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			<logger level="ERROR" doc:name="Logger" doc:id="a6707f81-430a-4758-9c6b-ba41901d2b80" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			
+</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="4c93f18a-3eb2-42b1-9533-1f1c7a693178" type="DB:RETRY_EXHAUSTED">
+				<logger level="ERROR" doc:name="Logger" doc:id="68f2b736-90b1-4311-86db-14b65c3eb603" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			<ee:transform doc:name="Transform Message" doc:id="b91fb666-4727-4291-9eb4-b3af287c3ff4" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	errorCode: "408 REQUEST_TIMEOUT",
+	errorMessage: error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			<logger level="ERROR" doc:name="Logger" doc:id="ae3a7b63-a7fd-468d-9491-49daee2cd983" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			
+</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d73a470d-d721-4fca-b1b7-09d9ea7fd76a" type="ANY">
+			<logger level="ERROR" doc:name="Logger" doc:id="4046feb9-0d76-48a4-a4f7-5f93bbe59af6" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+			<ee:transform doc:name="Transform Message" doc:id="9022bcd7-ed40-4388-ad24-198b778817b5" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+    errorCode: "500 INTERNAL_SERVER_ERROR",
+    errorMessage: error.description
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<logger level="ERROR" doc:name="Logger" doc:id="d1606d37-24f2-4d02-8d7c-fe1cf1385a2d" message="correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+		</on-error-propagate>
+        
+</error-handler>
 	</mule>

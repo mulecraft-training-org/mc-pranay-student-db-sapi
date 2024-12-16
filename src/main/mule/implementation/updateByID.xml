@@ -7,8 +7,9 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<flow name="put:\students\(studentID):application\json:student-registration-api-config">
+		<logger level="INFO" doc:name="Logger" doc:id="df7474ad-c62d-43d2-85e3-11c1a3ac73a0" message="flow started: #[flow.name]  correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
 		<set-variable value="#[attributes.uriParams.studentID]" doc:name="Set Variable" doc:id="da72456d-14d5-4910-b6b7-f4e20a33776c" variableName="studentID"/>
-		<db:update doc:name="Update" doc:id="9ea49807-5b5c-4be7-8f69-a5ea3998a011" config-ref="Database_Config1">
+		<db:update doc:name="Update" doc:id="9ea49807-5b5c-4be7-8f69-a5ea3998a011" config-ref="Database_Config">
 			<db:sql ><![CDATA[update students set first_name= :firstName, last_name= :lastName
 where student_id= :studentID]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
@@ -28,6 +29,7 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="2aa2a951-e99b-48a0-b81d-6df3e0fbc0fc" message="flow ended: #[flow.name]  correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
     
 </flow>
 	</mule>

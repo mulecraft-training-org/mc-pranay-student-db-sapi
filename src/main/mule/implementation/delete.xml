@@ -7,8 +7,8 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<flow name="delete:\students:application\json:student-registration-api-config">
-        <logger level="INFO" doc:name="Logger" doc:id="4553b828-27c4-4ff1-a97d-f93919b50bee" message="#[payload]"/>
-		<db:bulk-delete doc:name="Bulk delete" doc:id="4897c2a2-35f7-4a7c-9957-f6035516d28c" config-ref="Database_Config1">
+		<logger level="INFO" doc:name="Logger" doc:id="74598368-a30e-40f5-8b54-9cdd9c943ddf" message="flow started: #[flow.name]  correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+		<db:bulk-delete doc:name="Bulk delete" doc:id="4897c2a2-35f7-4a7c-9957-f6035516d28c" config-ref="Database_Config">
 			<db:sql ><![CDATA[delete from students where student_id= :studentID]]></db:sql>
 		</db:bulk-delete>
 		<ee:transform doc:name="Transform Message">
@@ -16,13 +16,14 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{
-	"status": "200 OK",
-	"message": "deleted"
-}]]></ee:set-payload>
+payload.student_id map(
+	{
+		"studentID": $,
+		"201 created": "new student registered"
+	}
+)]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="abc1a2d5-3c8b-4a73-8eb2-25b3d75d21e8" message="#[payload]"/>
-    
+		<logger level="INFO" doc:name="Logger" doc:id="9144f161-3a8a-4806-b510-264cc8956f54" message="flow ended: #[flow.name]  correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
 </flow>
 	</mule>

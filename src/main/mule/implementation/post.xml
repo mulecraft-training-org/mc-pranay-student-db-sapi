@@ -8,13 +8,14 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/workday http://www.mulesoft.org/schema/mule/workday/current/mule-workday.xsd">
 <flow name="post:\students:application\json:student-registration-api-config">
+		<logger level="INFO" doc:name="Logger" doc:id="4e015c4a-07a2-4857-8fa2-13dc2b2dddd1" message="flow started: #[flow.name]  correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
 		<set-variable value="#[%dw 2.0&#10;output application/json&#10;---&#10;&quot;SELECT student_id FROM students WHERE email_id IN &quot; ++ &quot;(&quot; ++ ((payload.emailID map ((item) -&gt; &quot;'&quot; ++ item ++ &quot;'&quot;)) joinBy &quot;,&quot; ++ &quot;)&quot;)]" doc:name="Set Variable" doc:id="a70ea826-e60e-44f3-a526-c4a6ce18ec7e" variableName="emailID" />
-		<db:bulk-insert doc:name="Bulk insert" doc:id="9b04aaaa-2a34-4bf8-9386-5f47843d89e4" config-ref="Database_Config1">
+		<db:bulk-insert doc:name="Bulk insert" doc:id="9b04aaaa-2a34-4bf8-9386-5f47843d89e4" config-ref="Database_Config">
 <db:sql><![CDATA[INSERT INTO students (first_name, last_name, trainer_id, enrollment_date, course_id, email_id, school_name) 
 VALUES (:firstName, :lastName, :trainerID, TO_DATE(:enrollmentDate, 'YYYY-MM-DD'), :courseID, :emailID, :schoolName);
 ]]></db:sql>
 </db:bulk-insert>
-		<db:select doc:name="Select" doc:id="0c6b6ce5-fc59-4c6b-a3dc-f27bcd906f36" config-ref="Database_Config1">
+		<db:select doc:name="Select" doc:id="0c6b6ce5-fc59-4c6b-a3dc-f27bcd906f36" config-ref="Database_Config">
 <db:sql><![CDATA[#[vars.emailID]]]></db:sql>
 </db:select>
 		<ee:transform doc:name="Transform Message" doc:id="a617c5ec-3b93-4111-893b-b141a5f8cefd">
@@ -32,5 +33,6 @@ payload.student_id map(
 				<ee:variables>
 				</ee:variables>
 </ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="5bd8bf40-99fc-4b84-87f1-ada99d39624b" message="flow ended: #[flow.name]  correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
 </flow>
 </mule>

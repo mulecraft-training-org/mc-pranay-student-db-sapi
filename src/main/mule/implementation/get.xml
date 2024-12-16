@@ -7,7 +7,8 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<flow name="get:\students:student-registration-api-config">
-        <db:select doc:name="Select" doc:id="fce60699-727d-42c9-8d1c-95db613b9383" config-ref="Database_Config1">
+        <logger level="INFO" doc:name="Logger" doc:id="b4918048-84ee-487a-8a5a-88626e3a80f5" message="flow started: #[flow.name]  correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+		<db:select doc:name="Select" doc:id="fce60699-727d-42c9-8d1c-95db613b9383" config-ref="Database_Config">
 			<db:sql ><![CDATA[select * from students where first_name= :firstName and last_name= :lastName;]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
 	firstName: attributes.queryParams.firstName,
@@ -33,5 +34,7 @@ payload map((item)->
 )]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-    </flow>
+		<logger level="INFO" doc:name="Logger" doc:id="7ab98bbe-780e-4a25-a182-9ecea335dd52" message="flow ended: #[flow.name]  correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+    
+</flow>
 	</mule>
