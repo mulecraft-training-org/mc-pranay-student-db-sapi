@@ -7,13 +7,15 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<flow name="get:\students\(studentID):student-registration-api-config">
-        <logger level="INFO" doc:name="Logger" doc:id="fc26ffa6-49ef-49b1-ad20-231dc54d589b" message="flow started: #[flow.name]  correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+        <set-variable value="#[attributes.headers.trackingId]" doc:name="Set Variable" doc:id="a7d442e9-267e-4cfb-bb35-22ec1faf77ab" variableName="trackingId"/>
+		<logger level="INFO" doc:name="Logger" doc:id="fc26ffa6-49ef-49b1-ad20-231dc54d589b" message="flow started: #[flow.name]  correlationId: #[correlationId]  trackingId: #[vars.trackingId]"/>
 		<db:select doc:name="Select" doc:id="b41f7e58-0e3d-4adc-b8cf-d17ec77cd33e" config-ref="Database_Config">
 			<db:sql ><![CDATA[select * from students where student_id= :studentID;]]></db:sql>
 			<db:input-parameters ><![CDATA[#[{
 	studentID: attributes.uriParams.studentID
 }]]]></db:input-parameters>
 		</db:select>
+		<logger level="DEBUG" doc:name="Logger" doc:id="7b627a53-ce64-4292-ad4b-6370db02f58c" message="Flow: #[flow.name]  correlationId: #[correlationId]  trackingId: #[vars.trackingId]  payload: #[payload]"/>
 		<ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
@@ -22,7 +24,8 @@ output application/json
 payload]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="520340f0-2c47-45d3-ba6e-3aa6791d8e5f" message="flow ended: #[flow.name]  correlationId: #[correlationId]  trackingId: #[attributes.headers.trackingId]"/>
+		<logger level="DEBUG" doc:name="Logger" doc:id="32e5462c-d6c8-43b2-b9e5-94f4afa955d6" message="Flow: #[flow.name]  correlationId: #[correlationId]  trackingId: #[vars.trackingId]  payload: #[payload]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="520340f0-2c47-45d3-ba6e-3aa6791d8e5f" message="flow ended: #[flow.name]  correlationId: #[correlationId]  trackingId: #[vars.trackingId]"/>
     
 </flow>
 	</mule>
